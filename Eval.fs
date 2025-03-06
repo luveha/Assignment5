@@ -29,6 +29,7 @@ module Interpreter.Eval
                 | Error e, _ | _ , Error e-> Error(e)
                 | Ok x, Ok 0 -> Error (DivisionByZero) 
                 | Ok x, Ok y -> Ok (x % y)     
+        | MemRead(_) -> Ok 0
 
     let rec boolEval b st = 
         match b with
@@ -87,3 +88,6 @@ module Interpreter.Eval
                                 | Error e -> Error e
                                 | Ok st''' -> Ok st'''
                 | Ok false -> Ok st
+        | Alloc (_,_) -> Ok st
+        | Free (_,_) -> Ok st
+        | MemWrite(_,_) -> Ok st

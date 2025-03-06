@@ -2,7 +2,12 @@ module Interpreter.State
 
     open Result
     open Language
-    
+  
+    let alloc _ = failwith "not implemented"
+    let free _ = failwith "not implemented"
+    let getMem _ = failwith "not implemented"
+    let setMem _ = failwith "not implemented"
+
     let reservedVariableNameList = ["if"; "then"; "else"; "while"; "declare"; "print"; "random"; "fork"; "__result__"]
     let reservedVariableName s= List.exists(fun x -> x = s) reservedVariableNameList
 
@@ -13,6 +18,7 @@ module Interpreter.State
     
     
     type state = {m: List<Map<string,int>>}
+    
     let mkState () = {m = [Map.empty<string,int>]}
 
     let push st = {m = Map.empty<string,int> :: st.m}
