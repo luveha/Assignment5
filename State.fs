@@ -3,6 +3,12 @@ module Interpreter.State
     open Result
     open Language
 
+    let alloc _ = failwith "not implemented"
+    let free _ = failwith "not implemented"
+    let getMem _ = failwith "not implemented"
+    let setMem _ = failwith "not implemented"
+
+
     let reservedVariableNameList = ["if"; "then"; "else"; "while"; "declare"; "print"; "random"; "fork"; "__result__"]
     let reservedVariableName s= List.exists(fun x -> x = s) reservedVariableNameList
     let validVariableName (s: string) = 
@@ -11,7 +17,7 @@ module Interpreter.State
         | _ -> false
 
     type state = {m: Map<string,int>}
-    let mkState 0 = {m = Map.empty<string,int>}
+    let mkState (i : int) = {m = Map.empty<string,int>}
 
     let declare x st = 
         match st.m with
@@ -32,4 +38,6 @@ module Interpreter.State
     let random _ = failwith "not implemented"
     
     let push _ = failwith "not implemented"
-    let pop _ = failwith "not implemented"     
+    let pop _ = failwith "not implemented"
+    
+         
