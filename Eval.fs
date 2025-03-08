@@ -25,7 +25,17 @@ module Interpreter.Eval
                         | Div _ -> apply (arithEval x st) (arithEval y st) (fun x y -> x/y)
                         | _ -> apply (arithEval x st) (arithEval y st) (fun x y -> x%y)
                 | _ -> None
-        | MemRead (_) -> Some 0
+        | MemRead (e1) -> 
+                match (arithEval e1 st) with 
+                | Some n ->
+                        match State.getMem n st with 
+                        | Some x -> Some x
+                        | _ -> None
+                | None -> None
+        | Var(x) -> 
+                match st.m.ContainsKey(x) with
+                | true -> State.getMem st.m.[x] st 
+                | false -> None
 
     let rec boolEval b st = 
         match b with
@@ -66,6 +76,6 @@ module Interpreter.Eval
                         | None -> None
                 | Some false -> Some st
                 | None -> None
-        | Alloc (_,_) -> Some st
-        | Free (_,_) -> Some st
+        | Alloc (x,e) -> arithEval e st |> Option.bind (fun i -> State.alloc x i st) 
+        | Free (e1,e2) -> Some st
         | MemWrite(_,_) -> Some st

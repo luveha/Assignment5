@@ -10,7 +10,7 @@ let [<EntryPoint>] main _ =
     printfn "Actual: %A" (10 |> empty |> setMem 3 42)
     printfn "Expected: None"
     printfn "--------"
-    printfn "Actual: %A" (10 |> empty |> alloc 3)
+    printfn "Actual: %A" (100 |> mkState |>declare "x" |>Option.bind (Interpreter.State.alloc "x" 10) |>Option.bind (arithEval (MemRead(Var "y") .+. Num 42)))
     printfn "Expected: ????"
     printfn "--------"
     printfn "Actual: %A" (10 |> empty |> alloc 3 |> Option.bind (fun (m, ptr) -> m |> setMem ptr 42 |> Option.bind (getMem ptr)))
