@@ -77,5 +77,7 @@ module Interpreter.Eval
                 | Some false -> Some st
                 | None -> None
         | Alloc (x,e) -> arithEval e st |> Option.bind (fun i -> State.alloc x i st) 
-        | Free (e1,e2) -> Some st
-        | MemWrite(_,_) -> Some st
+        | Free (e1,e2) -> 
+                (arithEval e1 st) |> Option.bind (fun eVal1 -> ((arithEval e2 st) |> Option.bind(fun eVal2 -> State.free eVal1 eVal2 st)))
+        | MemWrite(e1,e2) -> 
+                (arithEval e1 st) |> Option.bind (fun eVal1 -> ((arithEval e2 st) |> Option.bind(fun eVal2 -> State.setMem eVal1 eVal2 st)))
